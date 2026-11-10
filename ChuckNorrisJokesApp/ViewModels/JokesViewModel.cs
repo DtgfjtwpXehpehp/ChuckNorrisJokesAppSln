@@ -11,6 +11,8 @@ namespace ChuckNorrisJokesApp.ViewModels
     {
         private IChuckNorrisApiService _chuckNorrisApiService;
 
+        private IDadJokeApiService _dadJokeApiService;
+
         private IPopUp _popupService;
 
         private string _chuckNorrisJoke;
@@ -18,39 +20,57 @@ namespace ChuckNorrisJokesApp.ViewModels
         public string ChuckNorrisJoke
         {
             get { return _chuckNorrisJoke; }
-            set { _chuckNorrisJoke = value;
+            set
+            {
+                _chuckNorrisJoke = value;
 
                 OnPropertyChanged();
             }
         }
 
-        public ICommand GetJokeCommand { get; set; }
+        private string _dadJoke;
 
-        public JokesViewModel(IChuckNorrisApiService service)
+        public string DadJoke
         {
-            _chuckNorrisApiService = service;
+            get { return _dadJoke; }
+            set
+            {
+                _dadJoke = value;
 
-       
-
-            GetJokeCommand = new Command(FatchJoke);
+                OnPropertyChanged();
+            }
         }
 
-        private async void FatchJoke(object param)
+
+        public ICommand GetChuckNorrisJokeCommand { get; set; }
+
+        public ICommand GetDadJokeCommand { get; set; }
+
+        public JokesViewModel(
+            IChuckNorrisApiService chuckNorrisApiService,
+            IDadJokeApiService dadJokeApiService)
         {
+            _chuckNorrisApiService = chuckNorrisApiService;
+            _dadJokeApiService = dadJokeApiService;
 
-            try
-            {
+            GetChuckNorrisJokeCommand = new Command(async () =>
+                await FetchChuckNorrisJokeAsync());
 
-                //throw new HttpRequestException("BOOM");
-          ChuckNorrisJoke =  await _chuckNorrisApiService.GetJokeAsync();
-
-            }
-            catch(Exception ex)
-            {
-                await _popupService.ShowPopUpAsync("Error", ex.Message, "OK");
-            }
-
-
+            GetDadJokeCommand = new Command(async () =>
+                await FetchDadJokeAsync());
         }
+
+        private async Task FetchChuckNorrisJokeAsync()
+        {
+            ChuckNorrisJoke =
+                await _chuckNorrisApiService.GetJokeAsync();
+        }
+
+        private async Task FetchDadJokeAsync()
+        {
+            DadJoke =
+                await _dadJokeApiService.GetJokeAsync();
+        }
+
     }
 }

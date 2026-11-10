@@ -3,9 +3,84 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ChuckNorrisJokesApp.Views.JokesView"
              Title="JokesView">
-    <VerticalStackLayout>
-        <Label Text="{Binding ChuckNorrisJoke}"/>
 
-        <Button Text="Get Joke" Command="{Binding GetJokeCommand}"/>
-    </VerticalStackLayout>
+    <Grid Padding="20"
+          ColumnSpacing="20"
+          ColumnDefinitions="*,*"
+          VerticalOptions="Center">
+
+        <!-- Chuck Norris card -->
+        <VerticalStackLayout Grid.Column="0" Spacing="25">
+            <Border MaximumWidthRequest="190"
+                    HeightRequest="254"
+                    BackgroundColor="White"
+                    Stroke="#BEBEBE"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 10">
+
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
+                </Border.Shadow>
+
+                <Grid>
+                    <BoxView InputTransparent="True">
+                        <BoxView.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#00000000" Offset="0.0"/>
+                                <GradientStop Color="#00000000" Offset="0.8"/>
+                                <GradientStop Color="#1A000000" Offset="1.0"/>
+                            </LinearGradientBrush>
+                        </BoxView.Background>
+                    </BoxView>
+
+                    <Label Text="{Binding ChuckNorrisJoke}"
+                           TextColor="Black"
+                           Padding="12"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           LineBreakMode="WordWrap"/>
+                </Grid>
+            </Border>
+
+            <Button Text="Get Chuck Norris Joke"
+                    Command="{Binding GetChuckNorrisJokeCommand}"/>
+        </VerticalStackLayout>
+
+        <!-- Dad joke card -->
+        <VerticalStackLayout Grid.Column="1" Spacing="25">
+            <Border MaximumWidthRequest="190"
+                    HeightRequest="254"
+                    BackgroundColor="White"
+                    Stroke="#BEBEBE"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 10">
+
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
+                </Border.Shadow>
+
+                <Grid>
+                    <BoxView InputTransparent="True">
+                        <BoxView.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#00000000" Offset="0.0"/>
+                                <GradientStop Color="#00000000" Offset="0.8"/>
+                                <GradientStop Color="#1A000000" Offset="1.0"/>
+                            </LinearGradientBrush>
+                        </BoxView.Background>
+                    </BoxView>
+
+                    <Label Text="{Binding DadJoke}"
+                           TextColor="Black"
+                           Padding="12"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           LineBreakMode="WordWrap"/>
+                </Grid>
+            </Border>
+
+            <Button Text="Get Dad Joke"
+                    Command="{Binding GetDadJokeCommand}"/>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

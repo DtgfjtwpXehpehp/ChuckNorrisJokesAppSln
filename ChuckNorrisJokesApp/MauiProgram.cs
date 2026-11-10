@@ -25,6 +25,9 @@ namespace ChuckNorrisJokesApp
             builder.Services.AddSingleton<IConfigurationService, ConfigurationService>();
             builder.Services.AddSingleton<IChuckNorrisApiService, ChuckNorrisApiService>();
             builder.Services.AddSingleton<IPopUp, MauPopupService>();
+            builder.Services.AddSingleton<IDadJokeApiService, DadJokeApiService>();
+
+
 
             builder.Services.AddTransient<JokesView>();
             builder.Services.AddTransient<JokesViewModel>();
