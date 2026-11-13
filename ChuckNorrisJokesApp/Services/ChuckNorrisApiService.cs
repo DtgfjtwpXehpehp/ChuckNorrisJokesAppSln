@@ -21,30 +21,45 @@ namespace ChuckNorrisJokesApp.Services
             _configurationService = service;
 
             _httpClient = new HttpClient();
+
+            _httpClient.Timeout = TimeSpan.FromSeconds(10);
         }
 
-        public async Task<string>  GetJokeAsync()
+        public async Task<string> GetJokeAsync()
         {
-           HttpResponseMessage response =  await _httpClient.GetAsync(_configurationService.ChuckNorrisApiUrl);
-
-
-            if(response.IsSuccessStatusCode)
+            try
             {
+                HttpResponseMessage response = await _httpClient.GetAsync(_configurationService.ChuckNorrisApiUrl);
 
-                string jsonContent  =  await response.Content.ReadAsStringAsync();
-
-                //ChuckNorrisJoke joke = JsonConvert.DeserializeObject(jsonContent) as ChuckNorrisJoke;
-
-
-                ChuckNorrisJoke joke = JsonSerializer.Deserialize<ChuckNorrisJoke>(jsonContent);
-
-                if(joke != null)
+                if (!response.IsSuccessStatusCode)
                 {
-                    return joke.value;
+                    throw new JokeApiException($"The server returned an error ({(int)response.StatusCode}).");
                 }
+
+                string jsonContent = await response.Content.ReadAsStringAsync();
+
+                ChuckNorrisJoke? joke = JsonSerializer.Deserialize<ChuckNorrisJoke>(jsonContent);
+
+                if (joke == null || string.IsNullOrWhiteSpace(joke.value))
+                {
+                    throw new JokeApiException("The server returned an invalid response.");
+                }
+
+                return joke.value;
             }
-           
-            return null;
+            catch (JokeApiException)
+            {
+                throw;
+            }
+
+            catch (HttpRequestException)
+            {
+                throw new JokeApiException("Could not reach the server. Check your internet connection.");
+            }
+            catch (JsonException)
+            {
+                throw new JokeApiException("The server sent data in an unexpected format.");
+            }
         }
     }
 }

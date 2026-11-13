@@ -3,20 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ChuckNorrisJokesApp.Views.JokesView"
              Title="JokesView">
+
     <Grid>
+
         <Grid Padding="20"
-          ColumnSpacing="20"
-          ColumnDefinitions="*,*"
-          VerticalOptions="Center">
+              ColumnSpacing="20"
+              RowSpacing="25"
+              ColumnDefinitions="*,*"
+              RowDefinitions="Auto,Auto"
+              VerticalOptions="Center">
 
             <!-- Chuck Norris card -->
             <VerticalStackLayout Grid.Column="0" Spacing="25">
+                <Label Text="Chuck Norris Joke"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       HorizontalOptions="Center"/>
+
                 <Border MaximumWidthRequest="190"
-                    HeightRequest="254"
-                    BackgroundColor="White"
-                    Stroke="#BEBEBE"
-                    StrokeThickness="2"
-                    StrokeShape="RoundRectangle 10">
+                        HeightRequest="254"
+                        BackgroundColor="White"
+                        Stroke="#BEBEBE"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 10">
 
                     <Border.Shadow>
                         <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
@@ -34,26 +43,31 @@
                         </BoxView>
 
                         <Label Text="{Binding ChuckNorrisJoke}"
-                           TextColor="Black"
-                           Padding="12"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           LineBreakMode="WordWrap"/>
+                               TextColor="Black"
+                               Padding="12"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="WordWrap"/>
                     </Grid>
                 </Border>
 
                 <Button Text="Get Chuck Norris Joke"
-                    Command="{Binding GetChuckNorrisJokeCommand}"/>
+                        Command="{Binding GetChuckNorrisJokeCommand}"/>
             </VerticalStackLayout>
 
             <!-- Dad joke card -->
             <VerticalStackLayout Grid.Column="1" Spacing="25">
+                <Label Text="Dad Joke"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       HorizontalOptions="Center"/>
+
                 <Border MaximumWidthRequest="190"
-                    HeightRequest="254"
-                    BackgroundColor="White"
-                    Stroke="#BEBEBE"
-                    StrokeThickness="2"
-                    StrokeShape="RoundRectangle 10">
+                        HeightRequest="254"
+                        BackgroundColor="White"
+                        Stroke="#BEBEBE"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 10">
 
                     <Border.Shadow>
                         <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
@@ -71,20 +85,35 @@
                         </BoxView>
 
                         <Label Text="{Binding DadJoke}"
-                           TextColor="Black"
-                           Padding="12"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           LineBreakMode="WordWrap"/>
+                               TextColor="Black"
+                               Padding="12"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="WordWrap"/>
                     </Grid>
                 </Border>
 
                 <Button Text="Get Dad Joke"
-                    Command="{Binding GetDadJokeCommand}"/>
+                        Command="{Binding GetDadJokeCommand}"/>
+            </VerticalStackLayout>
+
+            <!-- Error message and button that fetches both jokes -->
+            <VerticalStackLayout Grid.Row="1"
+                                 Grid.ColumnSpan="2"
+                                 Spacing="15">
+
+                <Label Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding HasError}"
+                       TextColor="#C62828"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap"/>
+
+                <Button Text="Get Both Jokes"
+                        Command="{Binding GetBothJokesCommand}"/>
             </VerticalStackLayout>
         </Grid>
 
-
+        <!-- Loading overlay -->
         <Grid x:Name="LoadingOverlay"
               IsVisible="{Binding IsLoading}"
               BackgroundColor="#B3000000">
@@ -107,5 +136,6 @@
                        HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
         </Grid>
+
     </Grid>
 </ContentPage>
