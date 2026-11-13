@@ -3,84 +3,109 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ChuckNorrisJokesApp.Views.JokesView"
              Title="JokesView">
-
-    <Grid Padding="20"
+    <Grid>
+        <Grid Padding="20"
           ColumnSpacing="20"
           ColumnDefinitions="*,*"
           VerticalOptions="Center">
 
-        <!-- Chuck Norris card -->
-        <VerticalStackLayout Grid.Column="0" Spacing="25">
-            <Border MaximumWidthRequest="190"
+            <!-- Chuck Norris card -->
+            <VerticalStackLayout Grid.Column="0" Spacing="25">
+                <Border MaximumWidthRequest="190"
                     HeightRequest="254"
                     BackgroundColor="White"
                     Stroke="#BEBEBE"
                     StrokeThickness="2"
                     StrokeShape="RoundRectangle 10">
 
-                <Border.Shadow>
-                    <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
-                </Border.Shadow>
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
+                    </Border.Shadow>
 
-                <Grid>
-                    <BoxView InputTransparent="True">
-                        <BoxView.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#00000000" Offset="0.0"/>
-                                <GradientStop Color="#00000000" Offset="0.8"/>
-                                <GradientStop Color="#1A000000" Offset="1.0"/>
-                            </LinearGradientBrush>
-                        </BoxView.Background>
-                    </BoxView>
+                    <Grid>
+                        <BoxView InputTransparent="True">
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#00000000" Offset="0.0"/>
+                                    <GradientStop Color="#00000000" Offset="0.8"/>
+                                    <GradientStop Color="#1A000000" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
 
-                    <Label Text="{Binding ChuckNorrisJoke}"
+                        <Label Text="{Binding ChuckNorrisJoke}"
                            TextColor="Black"
                            Padding="12"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            LineBreakMode="WordWrap"/>
-                </Grid>
-            </Border>
+                    </Grid>
+                </Border>
 
-            <Button Text="Get Chuck Norris Joke"
+                <Button Text="Get Chuck Norris Joke"
                     Command="{Binding GetChuckNorrisJokeCommand}"/>
-        </VerticalStackLayout>
+            </VerticalStackLayout>
 
-        <!-- Dad joke card -->
-        <VerticalStackLayout Grid.Column="1" Spacing="25">
-            <Border MaximumWidthRequest="190"
+            <!-- Dad joke card -->
+            <VerticalStackLayout Grid.Column="1" Spacing="25">
+                <Border MaximumWidthRequest="190"
                     HeightRequest="254"
                     BackgroundColor="White"
                     Stroke="#BEBEBE"
                     StrokeThickness="2"
                     StrokeShape="RoundRectangle 10">
 
-                <Border.Shadow>
-                    <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
-                </Border.Shadow>
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="5,5" Radius="16" Opacity="0.3"/>
+                    </Border.Shadow>
 
-                <Grid>
-                    <BoxView InputTransparent="True">
-                        <BoxView.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#00000000" Offset="0.0"/>
-                                <GradientStop Color="#00000000" Offset="0.8"/>
-                                <GradientStop Color="#1A000000" Offset="1.0"/>
-                            </LinearGradientBrush>
-                        </BoxView.Background>
-                    </BoxView>
+                    <Grid>
+                        <BoxView InputTransparent="True">
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#00000000" Offset="0.0"/>
+                                    <GradientStop Color="#00000000" Offset="0.8"/>
+                                    <GradientStop Color="#1A000000" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
 
-                    <Label Text="{Binding DadJoke}"
+                        <Label Text="{Binding DadJoke}"
                            TextColor="Black"
                            Padding="12"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            LineBreakMode="WordWrap"/>
-                </Grid>
-            </Border>
+                    </Grid>
+                </Border>
 
-            <Button Text="Get Dad Joke"
+                <Button Text="Get Dad Joke"
                     Command="{Binding GetDadJokeCommand}"/>
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+
+
+        <Grid x:Name="LoadingOverlay"
+              IsVisible="{Binding IsLoading}"
+              BackgroundColor="#B3000000">
+
+            <VerticalStackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="16">
+
+                <Image x:Name="MasksImage"
+                       Source="theatre_masks.png"
+                       WidthRequest="160"
+                       HeightRequest="118"
+                       Aspect="AspectFit"
+                       SemanticProperties.Description="Comedy and tragedy theatre masks" />
+
+                <Label x:Name="LoadingLabel"
+                       Text="Loading..."
+                       TextColor="White"
+                       FontSize="16"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </Grid>
     </Grid>
 </ContentPage>

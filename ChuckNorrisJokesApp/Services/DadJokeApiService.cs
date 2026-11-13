@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Net.Http.Headers;
 using ChuckNorrisJokesApp.Models;
 using ChuckNorrisJokesApp.Services.Interfaces;
 
@@ -11,16 +12,17 @@ namespace ChuckNorrisJokesApp.Services
     {
 
         private HttpClient _httpClient;
+
         private IConfigurationService _configurationService;
 
-        public DadJokeApiService(IConfigurationService service)
+        public DadJokeApiService(IConfigurationService service) 
         {
 
             _configurationService = service;
 
             _httpClient = new HttpClient();
 
-            _httpClient.DefaultRequestHeaders.Accept.Add( new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
+            _httpClient.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue("application/json")
  );
         }
 

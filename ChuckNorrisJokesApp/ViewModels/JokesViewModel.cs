@@ -4,47 +4,47 @@ using System.Collections.Generic;
 using System.Text;
 using ChuckNorrisJokesApp.Services;
 using System.Windows.Input;
+using ChuckNorrisJokesApp.Services.Interfaces;
 
 namespace ChuckNorrisJokesApp.ViewModels
 {
     public class JokesViewModel : BaseViewModel
     {
-        private IChuckNorrisApiService _chuckNorrisApiService;
+        private readonly IChuckNorrisApiService _chuckNorrisApiService;
+        private readonly IDadJokeApiService _dadJokeApiService;
 
-        private IDadJokeApiService _dadJokeApiService;
-
-        private IPopUp _popupService;
-
-        private string _chuckNorrisJoke;
-
-        public string ChuckNorrisJoke
+        private string? _chuckNorrisJoke;
+        public string? ChuckNorrisJoke
         {
-            get { return _chuckNorrisJoke; }
-            set
-            {
-                _chuckNorrisJoke = value;
+            get => _chuckNorrisJoke;
+            set { _chuckNorrisJoke = value; OnPropertyChanged(); }
+        }
 
+        private string? _dadJoke;
+        public string? DadJoke
+        {
+            get => _dadJoke;
+            set { _dadJoke = value; OnPropertyChanged(); }
+        }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set
+            {
+                if (_isLoading == value) return;
+                _isLoading = value;
                 OnPropertyChanged();
+
+                // Re-evaluate CanExecute so the buttons disable/enable
+                GetChuckNorrisJokeCommand.ChangeCanExecute();
+                GetDadJokeCommand.ChangeCanExecute();
             }
         }
 
-        private string _dadJoke;
-
-        public string DadJoke
-        {
-            get { return _dadJoke; }
-            set
-            {
-                _dadJoke = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-
-        public ICommand GetChuckNorrisJokeCommand { get; set; }
-
-        public ICommand GetDadJokeCommand { get; set; }
+        public Command GetChuckNorrisJokeCommand { get; }
+        public Command GetDadJokeCommand { get; }
 
         public JokesViewModel(
             IChuckNorrisApiService chuckNorrisApiService,
@@ -53,24 +53,39 @@ namespace ChuckNorrisJokesApp.ViewModels
             _chuckNorrisApiService = chuckNorrisApiService;
             _dadJokeApiService = dadJokeApiService;
 
-            GetChuckNorrisJokeCommand = new Command(async () =>
-                await FetchChuckNorrisJokeAsync());
+            GetChuckNorrisJokeCommand = new Command(
+                async () => await FetchChuckNorrisJokeAsync(),
+                () => !IsLoading);
 
-            GetDadJokeCommand = new Command(async () =>
-                await FetchDadJokeAsync());
+            GetDadJokeCommand = new Command(
+                async () => await FetchDadJokeAsync(),
+                () => !IsLoading);
         }
 
         private async Task FetchChuckNorrisJokeAsync()
         {
-            ChuckNorrisJoke =
-                await _chuckNorrisApiService.GetJokeAsync();
+            IsLoading = true;
+            try
+            {
+                ChuckNorrisJoke = await _chuckNorrisApiService.GetJokeAsync();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         private async Task FetchDadJokeAsync()
         {
-            DadJoke =
-                await _dadJokeApiService.GetJokeAsync();
+            IsLoading = true;
+            try
+            {
+                DadJoke = await _dadJokeApiService.GetJokeAsync();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
-
     }
 }
